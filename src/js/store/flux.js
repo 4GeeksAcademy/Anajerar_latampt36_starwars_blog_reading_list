@@ -1,6 +1,9 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			favsCount:0,
+			favList: [],
+			favNames:[],
 			demo: [
 				{
 					title: "FIRST",
