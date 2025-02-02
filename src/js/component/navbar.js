@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
-export const Navbar = () => {
+export const Navbar = ({ onUpdate }) => {
 	const { store, actions } = useContext(Context);
+	const [favNamesList, setFavNamesList ] = useState()
 
 	const favoriteList = () => {
-		const render = (	store.favNames.map((name)=>{
-								return (<li className='dropdown-item d-flex justify-content-between'>
-											<a><span className="fs-6">{name}</span></a>
-											<button type="button" onClick={()=>{removeFav(name)}}><i class="fs-6 fa-solid fa-trash"></i></button>
+		const render = (	store.favList.map((name,idx)=>{
+								return (<li className='dropdown-item d-flex justify-content-between' key={idx}>
+											<a><span className="fs-6">{name.name}</span></a>
+											<button type="button" onClick={()=>onUpdate(name)}><i class="fs-6 fa-solid fa-trash"></i></button>
 										</li>)}))
 		return render
 	}
@@ -19,6 +20,8 @@ export const Navbar = () => {
 			store.favsCount--
 			const nameRm = store.favNames.findIndex((value)=> value==name);
 			store.favNames.splice(nameRm, 1);
+			onUpdate
+			//setFavNamesList(store.favNames)
 	}
 
 	return (
