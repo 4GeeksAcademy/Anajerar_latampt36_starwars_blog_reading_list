@@ -17,7 +17,8 @@ export const Single = props => {
 	
 	const getDescription = async(title) => {
 		console.log('getting wikipedia description:',title)
-		const descResponse = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`,{headers:{}})
+		const descResponse = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`,{cache: "no-store",
+			headers:{'content-type':'application/json'}})
 		if (descResponse.status==404) { return }
 		const description = await descResponse.json();
 		console.log("the guy description:",description.extract)
@@ -49,10 +50,10 @@ export const Single = props => {
 	return (
 		<>
 				<Navbar />
-				<div className="jumbotron">
-					<div class="card mb-3" style={{'max-width': "540px"}}>
+				<div className="jumbotron ms-5">
+					<div class="card d-flex justify-content-center" style={{'max-width': "80%"}}>
 						<div class="row g-0">
-							<div class="col-md-4">
+							<div class="col-md-3 m-3">
 								<img src={`https://starwars-visualguide.com/assets/img/characters/${params.theid}.jpg`} class="img-fluid rounded-start" alt="..."/>
 							</div>
 							<div class="col-md-8">
