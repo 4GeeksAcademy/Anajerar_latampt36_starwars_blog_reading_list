@@ -6,7 +6,7 @@ import { Navbar } from "../component/navbar";
 
 export const Planet = props => {
     const { store, actions } = useContext(Context);
-    const [ character, setCharacter ] = useState({'name':'',
+    const [ planet, setPlanet ] = useState({'name':'',
                                         'description':'',})
     const [ properties, setProperties ] = useState({'diameter':'',
                                                     'gravity':'',
@@ -16,50 +16,46 @@ export const Planet = props => {
     const params = useParams();
     
     const getDescription = async(title) => {
-        console.log('getting wikipedia description:',title)
         const descResponse = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`,{cache: "no-store",
             headers:{'content-type':'application/json'}})
         if (descResponse.status==404) { return }
         const description = await descResponse.json();
-        console.log("the guy description:",description.extract)
-        setCharacter({'name':title,'description':description.extract})
+        setPlanet({'name':title,'description':description.extract})
     }
 
     useEffect(()=>{
-        const getPeople = async(uid) =>{
-            console.log('getting people id:',uid)
+        const getPlanet = async(uid) =>{
             const response = await fetch(`https://www.swapi.tech/api/planets/${uid}`,{
                     headers:{}
                 })
-            const peopleData= await response.json()
-            console.log(peopleData.result.properties.name);
-            setCharacter({'name':peopleData.result.properties.name,
-                        'description':peopleData.result.description
+            const planetData= await response.json()
+            setPlanet({'name':planetData.result.properties.name,
+                        'description':planetData.result.description
                         })
-            setProperties({'diameter':peopleData.result.properties.diameter,
-                            'gravity':peopleData.result.properties.gravity,
-                            'population':peopleData.result.properties.population,
-                            'terrain':peopleData.result.properties.terrain,
-                            'climate':peopleData.result.properties.climate})
-            getDescription(peopleData.result.properties.name)
+            setProperties({'diameter':planetData.result.properties.diameter,
+                            'gravity':planetData.result.properties.gravity,
+                            'population':planetData.result.properties.population,
+                            'terrain':planetData.result.properties.terrain,
+                            'climate':planetData.result.properties.climate})
+            getDescription(planetData.result.properties.name)
 
         }
-        getPeople(params.theid)
+        getPlanet(params.theid)
     },[])
     
     return (
         <>
                 <Navbar />
                 <div className="jumbotron ms-5">
-                    <div class="card d-flex justify-content-center" style={{'max-width': "80%"}}>
-                        <div class="row g-0">
-                            <div class="col-md-3 m-3">
-                                <img src={`https://starwars-visualguide.com/assets/img/planets/${params.theid}.jpg`} class="img-fluid rounded-start" alt="..."/>
+                    <div className="card d-flex justify-content-center" style={{'max-width': "80%"}}>
+                        <div className="row g-0">
+                            <div className="col-md-3 m-3">
+                                <img src={`https://starwars-visualguide.com/assets/img/planets/${params.theid}.jpg`} className="img-fluid rounded-start" alt="..."/>
                             </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{character.name}</h5>
-                                    <p class="card-text">{character.description}</p>
+                            <div className="col-md-8">
+                                <div className="card-body">
+                                    <h5 className="card-title">{planet.name}</h5>
+                                    <p className="card-text">{planet.description}</p>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +63,7 @@ export const Planet = props => {
                     <div className='row'>
                         <div className='col-2'>
                             <p clasName='jusrify-content-center'>Name</p>
-                            <p>{character.name}</p>
+                            <p>{planet.name}</p>
                         </div>
                         <div className='col-2'>
                             <p clasName='justify-content-center'>Diameter</p>

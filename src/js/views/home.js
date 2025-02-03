@@ -6,11 +6,8 @@ import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
 
 export const Home = () => {
-	//const [ imgIndx, setImgIndx ] = useState([])
 	const [ people, setPeople ] = useState([]);
-	const [ peopleDetails, setPeopleDetails] = useState([]);
 	const [ planet, setPlanet ] = useState([]);
-	const [ planetDetails, setPlanetDetails ] = useState([]);
 	const [ nextPplPage, setNextPplPage ] = useState(null);
 	const [ prevPplPage, setPrevPplPage ] = useState(null);
 	const [ nextPltPage, setNextPltPage ] = useState(null);
@@ -52,7 +49,6 @@ export const Home = () => {
 
 		} 
 	
-
 	const getPlanetHeader = async (url) => {
 		
 		fetch(url,{
@@ -173,14 +169,10 @@ export const Home = () => {
 
 	}
 
-	const nav =(name) => {
+	const navFav =(name) => {
 		store.favsCount--
-		const nameRm = store.favNames.findIndex((value)=> value==name.name);
-		store.favNames.splice(nameRm, 1);
 		const idRm = store.favList.findIndex((value)=> value.name==name.name);
-		console.log('this is the id position identified:',idRm)
 		store.favList.splice(idRm, 1);
-		console.log('store fav names:',store.favNames,'fav ids:',store.favList);
 		updatePeopleFavs();
 		updatePlanetFavs()
 	}
@@ -188,21 +180,16 @@ export const Home = () => {
 	
 
 	const favorites = (id,fav,name) => {
-		//id = element+id;
 		if (fav) {
 			store.favsCount-- ;
 			const idRm = store.favList.findIndex((value)=> value.id==id);
-			const nameRm = store.favNames.findIndex((value)=> value==name);
 			store.favList.splice(idRm, 1);
-			store.favNames.splice(nameRm, 1);
 		} else {
 			store.favsCount++ ;
 			store.favList.push({'id':id,'name':name});
-			store.favNames.push(name)
 		}
 		updatePeopleFavs();
 		updatePlanetFavs();
-		console.log('fav names:', store.favList)
 	}
 	
 	const charactersCards = (swpeople) => {
@@ -211,7 +198,7 @@ export const Home = () => {
 				<div className="m-2">
 					<img src={`https://starwars-visualguide.com/assets/img/characters/${idx.uid}.jpg`} className="card-img-top" alt="..."/>
 				</div>
-				<div className="card-body" style={{'line-height': 1.0}} >
+				<div className="card-body" style={{lineHeight: 1.0}} >
 					<h5 className="card-title text-light">{idx.name}</h5>
 					<p className="card-text text-light"></p>
 					<p className="card-text text-light">Genre:{idx.gender}</p>
@@ -219,9 +206,9 @@ export const Home = () => {
 					<p className="card-text text-light">Eye Color:{idx.eyeColor}</p>
 					
 					<div className='d-flex justify-content-between'>
-						<button onClick={() => {navigate(`/single/${idx.uid}`)}} className="btn btn-primary">Learn more</button>
+						<button onClick={() => {navigate(`/person/${idx.uid}`)}} className="btn btn-primary">Learn more</button>
 						<button type="button" className={idx.fav? 'btn btn-danger':'btn btn-secondary'}
-							onClick={() => {favorites('c'+idx.uid,idx.fav,idx.name)}}><i class="fa-regular fa-heart"></i></button>
+							onClick={() => {favorites('c'+idx.uid,idx.fav,idx.name)}}><i className="fa-regular fa-heart"></i></button>
 							
 					</div>
 				</div>
@@ -232,13 +219,12 @@ export const Home = () => {
 	}
 	
 	const planetCards = (planets) => {
-		
 		const render = planets.map((idx,keyIndex) => (
 			<div className="card ms-2 bg-secondary" style={{flex: "0 0 300px" }} key={keyIndex}>
 				<div className="m-2">
 					<img src={(idx.uid=='1')? 'https://static.wikia.nocookie.net/esstarwars/images/b/b0/Tatooine_TPM.png/revision/latest?cb=20131214162357': `https://starwars-visualguide.com/assets/img/planets/${idx.uid}.jpg`} className="card-img-top" alt="..."/>
 				</div>
-				<div className="card-body" style={{'line-height': 1.0}}>
+				<div className="card-body" style={{lineHeight: 1.0}}>
 					<h5 className="card-title">{idx.name}</h5>
 					<p className="card-text"></p>
 					<p className="card-text">Population:{idx.population}</p>
@@ -247,7 +233,7 @@ export const Home = () => {
 						<button onClick={() => {navigate(`/planet/${idx.uid}`)}} className="btn btn-primary">Learn more</button>
 						<button type="button" className={idx.fav? 'btn btn-danger':'btn btn-secondary'}
 							onClick={() => {favorites('p'+idx.uid,idx.fav,idx.name)}}>
-								<i class="fa-regular fa-heart"></i>
+								<i className="fa-regular fa-heart"></i>
 						</button>
 					</div>
 				</div>
@@ -257,7 +243,6 @@ export const Home = () => {
 
 	const move = (nextpage) =>{
 		setLoading(prevLoading => ({...prevLoading, person: true}));
-		console.log('moving',divRef.current);
 		setBlurPeople(true)
 		getPeopleHeader(nextpage)
 		if (divRef.current) {
@@ -268,7 +253,6 @@ export const Home = () => {
 
 	const movePlanet = (nextpage) =>{
 		setLoading(prevLoading => ({...prevLoading, planet: true}));
-		console.log('moving',divRef.current);
 		setBlurPlanet(true);
 		getPlanetHeader(nextpage);
 		if (divpRef.current) {
@@ -280,12 +264,12 @@ export const Home = () => {
 
 	return (
 		<>
-			<Navbar onUpdate={nav}/>
+			<Navbar onUpdate={navFav}/>
 			<div className="text-start">
 				<div className="d-flex">
 					<h3 className="ms-5 me-5" style={{color:'red'}}>Characters</h3>
-					{loading.person? <div class="spinner-border" role="status">
-									<span class="visually-hidden">Loading...</span>
+					{loading.person? <div className="spinner-border" role="status">
+									<span className="visually-hidden">Loading...</span>
 								</div> : null}
 				</div>
 					<div className="d-flex" style={{overflowX: 'auto', width:'98%',
@@ -301,9 +285,9 @@ export const Home = () => {
 									</div> :null}
 					</div>
 				<div className="d-flex">
-					<h3 className="ms-5 me-5" style={{color:'red'}}>Planets</h3>
-						{loading.planet? <div class="spinner-border" role="status">
-											<span class="visually-hidden">Loading...</span>
+					<h3 className="ms-5 me-5 mt-5" style={{color:'red'}}>Planets</h3>
+						{loading.planet? <div className="spinner-border mt-5" role="status">
+											<span className="visually-hidden">Loading...</span>
 										</div> : null}
 				</div>
 					<div className="d-flex" style={{overflowX: 'auto', width:'98%' ,

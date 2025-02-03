@@ -4,8 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Navbar } from "../component/navbar";
 
-export const Single = props => {
-	const { store, actions } = useContext(Context);
+export const Person = props => {
+	//const { store, actions } = useContext(Context);
 	const [ character, setCharacter ] = useState({'name':'',
 										'description':'',})
 	const [ properties, setProperties ] = useState({'birth_year':'',
@@ -98,6 +98,6 @@ export const Single = props => {
 	)
 };
 
-Single.propTypes = {
+Person.propTypes = {
 	match: PropTypes.object
 };

@@ -3,7 +3,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			favsCount:0,
 			favList: [],
-			favNames:[],
 			demo: [
 				{
 					title: "FIRST",
